@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-brutal-black text-brutal-white font-mono antialiased;
+    cursor: crosshair;
+  }
+
+  ::selection {
+    @apply bg-brutal-accent text-brutal-black;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-brutal-black;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brutal-accent;
+  }
+}
+
+@layer components {
+  .brutal-border {
+    @apply border-2 border-brutal-white;
+  }
+
+  .brutal-button {
+    @apply px-6 py-3 bg-brutal-accent text-brutal-black font-bold uppercase tracking-wider
+           border-2 border-brutal-accent
+           hover:bg-brutal-black hover:text-brutal-accent
+           transition-all duration-150
+           active:translate-x-1 active:translate-y-1;
+  }
+
+  .brutal-button-outline {
+    @apply px-6 py-3 bg-transparent text-brutal-white font-bold uppercase tracking-wider
+           border-2 border-brutal-white
+           hover:bg-brutal-white hover:text-brutal-black
+           transition-all duration-150;
+  }
+
+  .brutal-card {
+    @apply bg-brutal-gray border-2 border-brutal-white p-6
+           hover:border-brutal-accent hover:translate-x-1 hover:-translate-y-1
+           transition-all duration-150;
+  }
+
+  .terminal-cursor::after {
+    content: '_';
+    @apply animate-blink;
+  }
+}
