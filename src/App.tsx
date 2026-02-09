@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
 import {
   Menu, X, ArrowRight, Terminal, Zap, Users,
   Calendar, MapPin, ExternalLink, MessageSquare,
@@ -130,7 +131,13 @@ function AgentChat({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
                     animate={{ opacity: 1, x: 0 }}
                     className={`${msg.role === 'user' ? 'ml-8 bg-brutal-accent text-brutal-black' : 'mr-8 bg-brutal-black border border-brutal-white'} p-3`}
                   >
-                    <p className="text-sm">{msg.content}</p>
+                    {msg.role === 'user' ? (
+                      <p className="text-sm">{msg.content}</p>
+                    ) : (
+                      <div className="text-sm prose prose-invert prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0 prose-headings:text-brutal-accent prose-a:text-brutal-accent prose-strong:text-brutal-white">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    )}
                   </motion.div>
                 ))}
                 {isLoading && (
