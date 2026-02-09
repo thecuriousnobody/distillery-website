@@ -535,6 +535,51 @@ function App() {
         </div>
       </section>
 
+      {/* Partners Section */}
+      <section id="partners" className="py-16 border-t-2 border-brutal-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-brutal-accent font-mono text-sm mb-4 text-center">// 005 — PARTNERS</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 font-display text-center">
+              OUR <span className="text-brutal-accent">PARTNERS</span>
+            </h2>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
+              {[
+                { name: 'DPI', logo: '/partners/dpi.png' },
+                { name: 'GPEDC', logo: '/partners/gpedc.png' },
+                { name: 'ICC', logo: '/partners/icc.png' },
+                { name: 'IIN', logo: '/partners/iin.png' },
+                { name: 'OSF Healthcare', logo: '/partners/osf.png' },
+                { name: 'University of Illinois', logo: '/partners/uofisystem.png' },
+              ].map((partner) => (
+                <motion.div
+                  key={partner.name}
+                  whileHover={{ scale: 1.05 }}
+                  className="w-32 h-20 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                >
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="max-w-full max-h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to text if logo not found
+                      const target = e.target as HTMLImageElement
+                      target.style.display = 'none'
+                      target.parentElement!.innerHTML = `<span class="text-brutal-white/60 text-sm font-mono text-center">${partner.name}</span>`
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-8 border-t-2 border-brutal-white">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
