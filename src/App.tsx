@@ -548,7 +548,7 @@ function App() {
               OUR <span className="text-brutal-accent">PARTNERS</span>
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-12 items-center justify-items-center">
               {[
                 { name: 'DPI', logo: '/partners/dpi.png' },
                 { name: 'GPEDC', logo: '/partners/gpedc.png' },
@@ -559,8 +559,8 @@ function App() {
               ].map((partner) => (
                 <motion.div
                   key={partner.name}
-                  whileHover={{ scale: 1.05 }}
-                  className="w-32 h-20 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                  whileHover={{ scale: 1.1 }}
+                  className="w-48 h-32 flex items-center justify-center transition-all duration-300 hover:drop-shadow-[0_0_25px_rgba(255,62,0,0.8)]"
                 >
                   <img
                     src={partner.logo}
