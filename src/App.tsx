@@ -27,35 +27,39 @@ function AgentChat({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
     { role: 'agent', content: 'I\'m the Distillery AI. Ask me anything about our programs, resources, or how we can help your startup.' }
   ])
   const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSend = () => {
-    if (!input.trim()) return
-    setMessages(prev => [...prev, { role: 'user', content: input }])
-    // Simulate agent response
-    setTimeout(() => {
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return
+
+    const userMessage = input
+    setInput('')
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }])
+    setIsLoading(true)
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage,
+          history: messages.slice(1) // Skip the initial greeting
+        })
+      })
+
+      if (!response.ok) throw new Error('Failed to get response')
+
+      const data = await response.json()
+      setMessages(prev => [...prev, { role: 'agent', content: data.message }])
+    } catch (error) {
+      console.error('Chat error:', error)
       setMessages(prev => [...prev, {
         role: 'agent',
-        content: getAgentResponse(input)
+        content: 'Sorry, I encountered an error. Please try again.'
       }])
-    }, 500)
-    setInput('')
-  }
-
-  const getAgentResponse = (query: string): string => {
-    const q = query.toLowerCase()
-    if (q.includes('gbeta') || q.includes('accelerator')) {
-      return 'gBETA Distillery Labs is our flagship accelerator program. Applications for 2026 are open until March 8. It\'s a free 6-week program for early-stage founders. Want me to tell you more about the requirements?'
+    } finally {
+      setIsLoading(false)
     }
-    if (q.includes('cowork') || q.includes('space') || q.includes('office')) {
-      return 'Coworking starts at $100/month. We\'re at 201 Southwest Adams Street, Peoria. Hours: Mon-Fri 8AM-5PM. Members get 24/7 badge access. Shall I help you schedule a tour?'
-    }
-    if (q.includes('fund') || q.includes('invest') || q.includes('money')) {
-      return 'We connect founders with funding opportunities through our network. Our programs include pitch practice, investor introductions, and grant writing support. What stage is your startup at?'
-    }
-    if (q.includes('mentor') || q.includes('help') || q.includes('advice')) {
-      return 'We have a network of experienced mentors across industries. Through gBETA and our Winning Wednesday workshops, you\'ll get direct access. What specific challenge are you facing?'
-    }
-    return 'I can help you navigate our programs, find resources, or connect with the right people. Try asking about: gBETA accelerator, coworking space, funding opportunities, or mentorship.'
   }
 
   return (
@@ -129,6 +133,19 @@ function AgentChat({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
                     <p className="text-sm">{msg.content}</p>
                   </motion.div>
                 ))}
+                {isLoading && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="mr-8 bg-brutal-black border border-brutal-white p-3"
+                  >
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-brutal-accent rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 bg-brutal-accent rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 bg-brutal-accent rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
               {/* Input */}
@@ -139,11 +156,20 @@ function AgentChat({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                    placeholder="Ask me anything..."
-                    className="flex-1 bg-brutal-black border-2 border-brutal-white px-3 py-2 text-sm focus:border-brutal-accent outline-none"
+                    placeholder={isLoading ? "Thinking..." : "Ask me anything..."}
+                    disabled={isLoading}
+                    className="flex-1 bg-brutal-black border-2 border-brutal-white px-3 py-2 text-sm focus:border-brutal-accent outline-none disabled:opacity-50"
                   />
-                  <button onClick={handleSend} className="brutal-button p-2">
-                    <Send size={18} />
+                  <button
+                    onClick={handleSend}
+                    disabled={isLoading}
+                    className="brutal-button p-2 disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="w-[18px] h-[18px] border-2 border-brutal-black border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Send size={18} />
+                    )}
                   </button>
                 </div>
               </div>
