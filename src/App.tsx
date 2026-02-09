@@ -560,7 +560,7 @@ function App() {
                 <motion.div
                   key={partner.name}
                   whileHover={{ scale: 1.1 }}
-                  className="w-48 h-32 flex items-center justify-center transition-all duration-300 hover:drop-shadow-[0_0_25px_rgba(255,62,0,0.8)]"
+                  className="w-56 h-40 flex items-center justify-center transition-all duration-300 bg-white rounded-xl p-5 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(255,62,0,0.5)]"
                 >
                   <img
                     src={partner.logo}
