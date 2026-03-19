@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import CalendarPanel from "./CalendarPanel";
+import BottomNav, { type KioskTab } from "./BottomNav";
+import TodayPanel from "./TodayPanel";
+import ProgramsPanel from "./ProgramsPanel";
+import AboutPanel from "./AboutPanel";
 import ChatPanel from "./ChatPanel";
 
 function LiveClock() {
@@ -22,28 +25,31 @@ function LiveClock() {
 }
 
 export default function KioskLayout() {
+  const [activeTab, setActiveTab] = useState<KioskTab>("today");
+
   return (
     <div className="h-screen w-screen bg-brutal-black flex flex-col overflow-hidden">
-      {/* Shared header */}
+      {/* Header */}
       <header className="flex-none px-6 py-3 border-b-2 border-brutal-accent flex items-center justify-between">
-        <h1 className="font-display text-2xl text-brutal-white font-bold tracking-tight">
-          DISTILLERY LABS
-        </h1>
+        <div>
+          <h1 className="font-display text-2xl text-brutal-white font-bold tracking-tight leading-none">
+            Distillery Labs
+          </h1>
+          <p className="font-mono text-xs text-gray-400">Peoria, Illinois</p>
+        </div>
         <LiveClock />
       </header>
 
-      {/* Split panels */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Calendar — 57% */}
-        <div className="w-[57%] border-r-2 border-brutal-accent overflow-hidden">
-          <CalendarPanel />
-        </div>
+      {/* Active tab content */}
+      <main className="flex-1 overflow-hidden">
+        {activeTab === "today" && <TodayPanel />}
+        {activeTab === "programs" && <ProgramsPanel />}
+        {activeTab === "about" && <AboutPanel />}
+        {activeTab === "concierge" && <ChatPanel />}
+      </main>
 
-        {/* Chat — 43% */}
-        <div className="w-[43%] overflow-hidden">
-          <ChatPanel />
-        </div>
-      </div>
+      {/* Bottom navigation */}
+      <BottomNav active={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 }

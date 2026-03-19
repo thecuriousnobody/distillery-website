@@ -5,7 +5,7 @@ import App from './App.tsx'
 import KioskApp from './KioskApp.tsx'
 import { AuthProvider } from './contexts/AuthContext'
 
-const isKiosk = window.location.pathname === '/kiosk'
+const isKiosk = window.location.pathname.startsWith('/kiosk')
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

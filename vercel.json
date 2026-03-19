@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/kiosk/:path*", "destination": "/index.html" },
     { "source": "/kiosk", "destination": "/index.html" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
