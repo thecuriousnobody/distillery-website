@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getPool } from "../lib/neonPool";
-import { generateNewsDigest, digestSignals } from "../lib/newsRadar";
+import { getPool } from "../lib/neonPool.js";
+import { generateNewsDigest, digestSignals } from "../lib/newsRadar.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const authHeader = req.headers.authorization;
