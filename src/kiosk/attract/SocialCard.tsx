@@ -14,8 +14,8 @@ const SOURCE_STYLES: Record<string, { label: string; color: string; bg: string; 
 const DEFAULT_STYLE = { label: "COMMUNITY", color: "text-brutal-accent", bg: "bg-brutal-accent/10", border: "border-brutal-accent/30" };
 
 export default function SocialCard({ post }: { post: SocialPost }) {
-  const sourceKey = post.source || post.platform;
-  const style = SOURCE_STYLES[sourceKey] || DEFAULT_STYLE;
+  // Use platform for style lookup (not organization name)
+  const style = SOURCE_STYLES[post.platform] || DEFAULT_STYLE;
 
   const handleTap = (e: React.MouseEvent) => {
     if (post.url) {
@@ -54,34 +54,37 @@ export default function SocialCard({ post }: { post: SocialPost }) {
       )}
 
       {/* Content */}
-      <div className={`flex-1 flex flex-col ${hasImage ? "p-4" : "p-5"}`}>
-        {/* Platform header — only when no image */}
-        {!hasImage && (
-          <div className="flex items-center gap-2 mb-3">
-            <span className={`font-mono text-[10px] font-bold px-2 py-0.5 ${style.color} ${style.bg}`}>
-              {style.label}
-            </span>
+      <div className={`flex-1 flex flex-col ${hasImage ? "p-4" : "p-6 justify-center"}`}>
+        {/* Platform + org header */}
+        <div className={`flex items-center gap-2 ${hasImage ? "" : "mb-4"}`}>
+          <span className={`font-mono text-[10px] font-bold px-2 py-0.5 ${style.color} ${style.bg}`}>
+            {style.label}
+          </span>
+          <span className={`font-mono text-[10px] font-bold ${style.color}`}>
+            {post.source || "@distillery_labs"}
+          </span>
+          {!hasImage && (
             <span className="font-mono text-[10px] text-gray-600 ml-auto">
               {formatRelativeDate(post.date)}
             </span>
-          </div>
+          )}
+        </div>
+
+        {/* Accent bar for text-only cards */}
+        {!hasImage && (
+          <div className={`w-12 h-1 ${style.bg} mb-4`} style={{ backgroundColor: `currentColor`, opacity: 0.2 }} />
         )}
 
-        {/* Organization name */}
-        <p className={`font-mono text-[10px] font-bold ${style.color} mb-2`}>
-          {post.source || "@distillery_labs"}
-        </p>
-
-        {/* Title — Electrolize display font, bold headline */}
+        {/* Title */}
         {post.title && (
-          <h3 className={`font-display ${hasImage ? "text-2xl" : "text-4xl"} text-brutal-white leading-snug mb-3 line-clamp-3 tracking-wide font-extrabold`}>
+          <h3 className={`font-display ${hasImage ? "text-2xl" : "text-3xl"} text-brutal-white leading-snug mb-3 ${hasImage ? "line-clamp-3" : "line-clamp-4"} tracking-wide font-extrabold`}>
             {post.title}
           </h3>
         )}
 
-        {/* Body text — Sora body font, large and readable */}
+        {/* Body text */}
         {post.text && post.text !== post.title && (
-          <p className={`font-body ${hasImage ? "text-lg" : "text-2xl"} text-gray-300 leading-relaxed line-clamp-5 flex-1`}>
+          <p className={`font-body ${hasImage ? "text-lg line-clamp-3" : "text-xl line-clamp-6"} text-gray-300 leading-relaxed flex-1`}>
             {post.text}
           </p>
         )}

@@ -11,13 +11,11 @@ interface AttractModeProps {
 export default function AttractMode({ onDismiss }: AttractModeProps) {
   const { socialPosts, signals, events, news, digested } = useSocialFeed();
 
-  // Left panel: only posts WITH images (visually compelling for screensaver)
-  const socialCards: CarouselCard[] = socialPosts
-    .filter((p) => !!p.imageUrl)
-    .map((p) => ({
-      type: "social" as const,
-      data: p,
-    }));
+  // Left panel: all social posts (image cards + bold text-only cards)
+  const socialCards: CarouselCard[] = socialPosts.map((p) => ({
+    type: "social" as const,
+    data: p,
+  }));
 
   // Right panel: Innovation Radar — exciting headlines only
   // Filter out Reddit (can be pessimistic), keep news + events + positive signals
