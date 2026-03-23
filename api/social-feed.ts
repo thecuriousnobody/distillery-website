@@ -116,6 +116,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // else skip — we already have a better version
     }
 
+    // Filter out posts that reference past dates (stale event announcements)
+    const freshPosts = socialPosts.filter((post) => {
+      const text = `${post.title} ${post.text}`;
+      return !hasPastDate(text);
+    });
+
     // Batch-lookup OG images for signal URLs from cache
     const signalUrls = signalsResult.rows
       .map((r: Record<string, unknown>) => (r as Record<string, unknown>).source_url as string)
@@ -216,7 +222,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     return res.status(200).json({
-      socialPosts,
+      socialPosts: freshPosts,
       signals,
       events,
       news,
@@ -233,6 +239,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lastUpdated: null,
     });
   }
+}
+
+/**
+ * Detect if post text contains a date reference that's in the past.
+ * Catches patterns like "3/18/26", "March 11", "Wednesday 3/18/26".
+ */
+function hasPastDate(text: string): boolean {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const months: Record<string, number> = {
+    january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+    july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+  };
+
+  // Pattern 1: M/D/YY or M/D/YYYY (e.g. "3/18/26" or "3/18/2026")
+  const slashDates = text.matchAll(/\b(\d{1,2})\/(\d{1,2})\/(\d{2,4})\b/g);
+  for (const m of slashDates) {
+    const month = parseInt(m[1]) - 1;
+    const day = parseInt(m[2]);
+    let year = parseInt(m[3]);
+    if (year < 100) year += 2000;
+    const d = new Date(year, month, day);
+    if (d < today) return true;
+  }
+
+  // Pattern 2: "Month D" or "Month Dth/st/nd/rd" (e.g. "March 11", "March 18th")
+  const monthNames = Object.keys(months).join("|");
+  const monthDateRe = new RegExp(
+    `\\b(${monthNames})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`, "gi"
+  );
+  const monthDates = text.matchAll(monthDateRe);
+  for (const m of monthDates) {
+    const month = months[m[1].toLowerCase()];
+    const day = parseInt(m[2]);
+    if (month === undefined) continue;
+    // Assume current year
+    const d = new Date(today.getFullYear(), month, day);
+    if (d < today) return true;
+  }
+
+  return false;
 }
 
 function normalizeTitle(title: string): string {

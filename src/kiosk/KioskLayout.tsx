@@ -91,8 +91,9 @@ export default function KioskLayout() {
           </div>
         ) : (
           <div>
-            <h1 className="font-display text-2xl text-brutal-white tracking-wider leading-none">
-              DISTILLERY LABS
+            <h1 className="font-display text-2xl tracking-wider leading-none">
+              <span className="text-brutal-white">DISTILLERY </span>
+              <span className="text-brutal-accent">LABS</span>
             </h1>
             <p className="font-mono text-[10px] text-brutal-mid tracking-[0.2em]">PEORIA, ILLINOIS</p>
           </div>

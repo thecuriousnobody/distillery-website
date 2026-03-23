@@ -1,21 +1,18 @@
 import { useState } from "react";
 import type { SocialPost } from "./types";
 
-const SOURCE_STYLES: Record<string, { label: string; color: string; bg: string; border: string }> = {
-  linkedin: { label: "LINKEDIN", color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/30" },
-  facebook: { label: "FACEBOOK", color: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/30" },
-  instagram: { label: "INSTAGRAM", color: "text-pink-400", bg: "bg-pink-400/10", border: "border-pink-400/30" },
-  proximity: { label: "PROXIMITY", color: "text-cyan-400", bg: "bg-cyan-400/10", border: "border-cyan-400/30" },
-  reddit: { label: "REDDIT", color: "text-orange-400", bg: "bg-orange-400/10", border: "border-orange-400/30" },
-  techcrunch: { label: "TECHCRUNCH", color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/30" },
-  hn_rss: { label: "HACKER NEWS", color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/30" },
+const SOURCE_LABELS: Record<string, string> = {
+  linkedin: "LINKEDIN",
+  facebook: "FACEBOOK",
+  instagram: "INSTAGRAM",
+  proximity: "PROXIMITY",
+  reddit: "REDDIT",
+  techcrunch: "TECHCRUNCH",
+  hn_rss: "HACKER NEWS",
 };
 
-const DEFAULT_STYLE = { label: "COMMUNITY", color: "text-brutal-accent", bg: "bg-brutal-accent/10", border: "border-brutal-accent/30" };
-
 export default function SocialCard({ post }: { post: SocialPost }) {
-  // Use platform for style lookup (not organization name)
-  const style = SOURCE_STYLES[post.platform] || DEFAULT_STYLE;
+  const label = SOURCE_LABELS[post.platform] || "COMMUNITY";
 
   const handleTap = (e: React.MouseEvent) => {
     if (post.url) {
@@ -29,7 +26,7 @@ export default function SocialCard({ post }: { post: SocialPost }) {
 
   return (
     <div
-      className={`bg-brutal-gray border-2 ${style.border} h-full flex flex-col overflow-hidden ${post.url ? "cursor-pointer" : ""}`}
+      className={`bg-brutal-gray border-2 border-brutal-accent/30 h-full flex flex-col overflow-hidden ${post.url ? "cursor-pointer" : ""}`}
       onClick={handleTap}
     >
       {/* Image — takes up top half when available */}
@@ -47,8 +44,8 @@ export default function SocialCard({ post }: { post: SocialPost }) {
           {/* Gradient overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-brutal-gray via-transparent to-transparent" />
           {/* Platform badge overlaid on image */}
-          <span className={`absolute top-3 left-3 font-mono text-[10px] font-bold px-2 py-0.5 ${style.color} ${style.bg} backdrop-blur-sm`}>
-            {style.label}
+          <span className="absolute top-3 left-3 font-mono text-[10px] font-bold px-2 py-0.5 text-brutal-accent bg-brutal-accent/10 backdrop-blur-sm">
+            {label}
           </span>
         </div>
       )}
@@ -57,10 +54,10 @@ export default function SocialCard({ post }: { post: SocialPost }) {
       <div className={`flex-1 flex flex-col ${hasImage ? "p-4" : "p-6 justify-center"}`}>
         {/* Platform + org header */}
         <div className={`flex items-center gap-2 ${hasImage ? "" : "mb-4"}`}>
-          <span className={`font-mono text-[10px] font-bold px-2 py-0.5 ${style.color} ${style.bg}`}>
-            {style.label}
+          <span className="font-mono text-[10px] font-bold px-2 py-0.5 text-brutal-accent bg-brutal-accent/10">
+            {label}
           </span>
-          <span className={`font-mono text-[10px] font-bold ${style.color}`}>
+          <span className="font-mono text-[10px] font-bold text-brutal-accent">
             {post.source || "@distillery_labs"}
           </span>
           {!hasImage && (
@@ -72,7 +69,7 @@ export default function SocialCard({ post }: { post: SocialPost }) {
 
         {/* Accent bar for text-only cards */}
         {!hasImage && (
-          <div className={`w-12 h-1 ${style.bg} mb-4`} style={{ backgroundColor: `currentColor`, opacity: 0.2 }} />
+          <div className="w-12 h-1 bg-brutal-accent/20 mb-4" />
         )}
 
         {/* Title */}
@@ -102,7 +99,7 @@ export default function SocialCard({ post }: { post: SocialPost }) {
             </span>
           )}
           {post.url && (
-            <span className={`font-mono text-[10px] ${style.color} ml-auto`}>
+            <span className="font-mono text-[10px] text-brutal-accent ml-auto">
               TAP TO READ &rarr;
             </span>
           )}

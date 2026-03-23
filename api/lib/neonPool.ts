@@ -1,4 +1,9 @@
-import { Pool } from "@neondatabase/serverless";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import ws from "ws";
+
+// Local dev: Neon serverless driver needs a WebSocket implementation
+// (Vercel's runtime provides one automatically)
+neonConfig.webSocketConstructor = ws;
 
 let pool: Pool | null = null;
 

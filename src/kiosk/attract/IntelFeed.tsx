@@ -140,14 +140,14 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
             {items.map((item, i) => {
               const seed = hashCode(`${item.headline}`) % 100;
 
-              // Dramatic size tiers:
-              // ~10% JUMBO  — huge headline, fills the width, unmissable
-              // ~15% LARGE  — big and bold with builder angle
-              // ~30% MEDIUM — standard readable size
-              // ~45% WHISPER — tiny, creates texture and rhythm
-              const isJumbo = seed < 10;
-              const isLarge = seed >= 10 && seed < 25;
-              const isMedium = seed >= 25 && seed < 55;
+              // Size tiers — mostly large/medium, small for occasional rhythm
+              // ~12% JUMBO  — huge headline, fills the width, unmissable
+              // ~30% LARGE  — big and bold with builder angle
+              // ~40% MEDIUM — standard readable size
+              // ~18% WHISPER — small, creates texture between big items
+              const isJumbo = seed < 12;
+              const isLarge = seed >= 12 && seed < 42;
+              const isMedium = seed >= 42 && seed < 82;
               // rest is whisper
 
               if (isJumbo) {
@@ -231,8 +231,8 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
                     if (item.url) { e.stopPropagation(); window.open(item.url, "_blank", "noopener"); }
                   }}
                 >
-                  <p className="font-mono text-lg text-gray-500 leading-snug">
-                    <span className="text-brutal-accent/30 mr-2">{item.tag}</span>
+                  <p className="font-mono text-2xl text-gray-500 leading-snug">
+                    <span className="text-brutal-accent/40 mr-2">{item.tag}</span>
                     {item.headline}
                   </p>
                 </div>
