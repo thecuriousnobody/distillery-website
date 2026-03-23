@@ -13,11 +13,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const [socialResult, signalsResult, eventsResult, newsResult, digestResult] =
       await Promise.all([
-        // Real social media posts (image_url populated by Apify scraping pipeline)
+        // Real social media posts — deduplicate by original_link across scrape runs
         pool.query(
-          `SELECT id, title, description, original_link, source_platform,
-                  image_url, organization, event_type, date, created_at
-           FROM scraped_events
+          `SELECT * FROM (
+             SELECT DISTINCT ON (original_link)
+                    id, title, description, original_link, source_platform,
+                    image_url, organization, event_type, date, created_at
+             FROM scraped_events
+             WHERE original_link IS NOT NULL AND original_link != ''
+             ORDER BY original_link, created_at DESC
+           ) deduped
            ORDER BY created_at DESC
            LIMIT 20`
         ),
