@@ -86,7 +86,7 @@ export default function SocialCarousel({
   return (
     <div className="h-full flex flex-col">
       {/* Card area */}
-      <div className="flex-1 relative overflow-hidden p-6">
+      <div className="flex-1 relative overflow-hidden p-6 flex items-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -94,7 +94,8 @@ export default function SocialCarousel({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-6"
+            className="absolute inset-x-6 top-1/2 -translate-y-1/2"
+            style={{ maxHeight: "calc(100% - 48px)" }}
           >
             {card.type === "social" && <SocialCard post={card.data} />}
             {card.type === "news" && <NewsCard item={card.data} />}
