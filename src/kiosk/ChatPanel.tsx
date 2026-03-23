@@ -59,6 +59,7 @@ export default function ChatPanel() {
   });
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
+  const [showKeyboard, setShowKeyboard] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const transcriptRef = useRef("");
@@ -269,59 +270,105 @@ export default function ChatPanel() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input area */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex-none px-6 py-4 border-t border-gray-700"
-      >
-        <div className="flex gap-2">
-          {/* Microphone button */}
-          {speechAvailable && (
+      {/* Input area — voice-first design */}
+      <div className="flex-none px-6 py-4 border-t border-gray-700">
+        {showKeyboard ? (
+          /* Expanded: text input + send + collapse button */
+          <form onSubmit={handleSubmit} className="flex gap-2">
             <button
               type="button"
-              onClick={toggleListening}
-              disabled={isLoading}
-              className={`flex-none w-12 h-12 flex items-center justify-center border-2 transition-colors disabled:opacity-50 ${
-                listening
-                  ? "border-red-500 bg-red-500/20 text-red-400 animate-pulse"
-                  : "border-gray-600 text-gray-400 hover:border-brutal-accent hover:text-brutal-accent"
-              }`}
-              title={listening ? "Stop listening" : "Speak"}
+              onClick={() => { setShowKeyboard(false); setInput(""); }}
+              className="flex-none w-12 h-12 flex items-center justify-center border-2 border-gray-600 text-gray-400 hover:border-brutal-accent hover:text-brutal-accent transition-colors"
+              title="Close keyboard"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" x2="12" y1="19" y2="22" />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
-          )}
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={listening ? "Listening..." : "Ask me anything..."}
-            className="flex-1 bg-brutal-gray border border-gray-600 text-brutal-white font-mono text-sm px-4 py-3 focus:outline-none focus:border-brutal-accent placeholder:text-gray-500"
-            readOnly={listening}
-            disabled={isLoading}
-            autoFocus
-          />
-          <button
-            type="submit"
-            disabled={isLoading || !input.trim() || listening}
-            className="font-mono text-sm px-6 py-3 bg-brutal-accent text-brutal-black font-bold hover:bg-brutal-yellow transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Send
-          </button>
-        </div>
-      </form>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your question..."
+              className="flex-1 bg-brutal-gray border border-gray-600 text-brutal-white font-mono text-sm px-4 py-3 focus:outline-none focus:border-brutal-accent placeholder:text-gray-500"
+              disabled={isLoading}
+            />
+            <button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="font-mono text-sm px-6 py-3 bg-brutal-accent text-brutal-black font-bold hover:bg-brutal-yellow transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Send
+            </button>
+          </form>
+        ) : (
+          /* Default: big mic button + small type button */
+          <div className="flex items-center justify-center gap-4">
+            {/* Expand keyboard button */}
+            <button
+              type="button"
+              onClick={() => setShowKeyboard(true)}
+              disabled={isLoading || listening}
+              className="flex-none w-12 h-12 flex items-center justify-center border-2 border-gray-600 text-gray-400 hover:border-brutal-accent hover:text-brutal-accent transition-colors disabled:opacity-50"
+              title="Type instead"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" />
+              </svg>
+            </button>
+
+            {/* Big pulsating mic button */}
+            {speechAvailable && (
+              <button
+                type="button"
+                onClick={toggleListening}
+                disabled={isLoading}
+                className={`flex-none w-20 h-20 rounded-full flex items-center justify-center border-4 transition-all disabled:opacity-50 ${
+                  listening
+                    ? "border-red-500 bg-red-500/20 text-red-400 animate-pulse scale-110"
+                    : "border-brutal-accent/70 text-brutal-accent hover:border-brutal-accent hover:bg-brutal-accent/10 animate-pulse"
+                }`}
+                title={listening ? "Stop listening" : "Tap to speak"}
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" x2="12" y1="19" y2="22" />
+                </svg>
+              </button>
+            )}
+
+            {/* Live transcript preview */}
+            {listening && input && (
+              <p className="font-mono text-sm text-gray-400 italic max-w-[200px] truncate">
+                {input}
+              </p>
+            )}
+
+            {/* Label when not listening */}
+            {!listening && (
+              <p className="font-mono text-xs text-gray-500 tracking-wider">
+                TAP TO SPEAK
+              </p>
+            )}
+            {listening && !input && (
+              <p className="font-mono text-xs text-red-400 tracking-wider animate-pulse">
+                LISTENING...
+              </p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
