@@ -111,7 +111,7 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
   return (
     <div className="h-full flex flex-col relative overflow-hidden">
       {/* Header */}
-      <div className="flex-none px-5 pt-5 pb-3 z-10">
+      <div className="flex-none pl-10 pr-5 pt-5 pb-3 z-10">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-brutal-accent animate-pulse" />
           <span className="font-mono text-xs text-brutal-accent tracking-[0.3em] font-bold">
@@ -129,7 +129,7 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
       {/* Scrolling marquee */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-hidden px-5"
+        className="flex-1 overflow-hidden pl-10 pr-5"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}

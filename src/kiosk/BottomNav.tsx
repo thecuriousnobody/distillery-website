@@ -1,4 +1,4 @@
-import { CalendarDays, LayoutGrid, Info, MessageCircle } from "lucide-react";
+import { CalendarDays, LayoutGrid, Info } from "lucide-react";
 
 export type KioskTab = "today" | "programs" | "about" | "concierge";
 
@@ -6,7 +6,6 @@ const TABS: { id: KioskTab; label: string; icon: typeof CalendarDays }[] = [
   { id: "today", label: "Today", icon: CalendarDays },
   { id: "programs", label: "Programs", icon: LayoutGrid },
   { id: "about", label: "About", icon: Info },
-  { id: "concierge", label: "Concierge", icon: MessageCircle },
 ];
 
 interface BottomNavProps {

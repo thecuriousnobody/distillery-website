@@ -1,4 +1,4 @@
-import { Users, MapPin, Clock, Mail, Phone, Link } from "lucide-react";
+import { Users, MapPin, Clock, Mail, Link } from "lucide-react";
 
 const PILLARS = [
   {
@@ -25,20 +25,24 @@ const PILLARS = [
 
 const TEAM = [
   {
-    name: "Doug Villhard",
+    name: "Doug Cruitt",
     role: "Executive Director",
   },
   {
-    name: "Jeffrey Mason",
-    role: "Program Director",
+    name: "Jeffrey Inman",
+    role: "Director of Programs",
   },
   {
-    name: "Jennifer Daly",
-    role: "Operations Director",
+    name: "Carolyn Reynolds",
+    role: "Operations Manager",
+  },
+  {
+    name: "Jennifer Rosa",
+    role: "Events Producer",
   },
   {
     name: "Rajeev Kumar",
-    role: "Technical Director",
+    role: "MakerSpace Manager",
   },
 ];
 
@@ -91,7 +95,7 @@ export default function AboutPanel() {
             TEAM
           </h3>
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-5 gap-4">
           {TEAM.map(({ name, role }) => (
             <div
               key={name}
@@ -126,10 +130,10 @@ export default function AboutPanel() {
               Distillery Labs
             </p>
             <p className="font-mono text-sm text-gray-400">
-              921 NE Jefferson Ave
+              201 SW Adams Street
             </p>
             <p className="font-mono text-sm text-gray-400">
-              Peoria, IL 61603
+              Peoria, IL 61602
             </p>
           </div>
 
@@ -141,10 +145,13 @@ export default function AboutPanel() {
               </h3>
             </div>
             <p className="font-mono text-sm text-gray-300">
-              Mon–Fri: 9 AM – 5 PM
+              Mon–Fri: 8:00 AM – 5:00 PM
             </p>
             <p className="font-mono text-sm text-gray-400">
-              Coworking: 24/7 badge access
+              Sat & Sun: Closed
+            </p>
+            <p className="font-mono text-sm text-gray-400 mt-1">
+              Members: 24/7 badge access
             </p>
           </div>
 
@@ -157,12 +164,6 @@ export default function AboutPanel() {
                 <Mail size={16} className="text-brutal-accent" />
                 <span className="font-mono text-sm text-gray-300">
                   info@distillerylabs.org
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone size={16} className="text-brutal-accent" />
-                <span className="font-mono text-sm text-gray-300">
-                  (309) 310-5038
                 </span>
               </div>
               <div className="flex items-center gap-2">
