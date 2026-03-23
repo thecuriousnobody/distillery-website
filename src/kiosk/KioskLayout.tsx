@@ -52,7 +52,7 @@ export default function KioskLayout() {
   useIdleTimer(enterAttractMode, 120_000, !isAttractMode && !isTransitioning);
 
   return (
-    <div className="h-screen w-screen bg-brutal-black flex flex-col overflow-hidden">
+    <div className="h-screen w-screen bg-brutal-black flex flex-col overflow-hidden relative">
       {/* Header — minimal in attract mode, full in interactive */}
       <header className="flex-none px-6 py-3 border-b-2 border-brutal-accent flex items-center justify-between relative z-50">
         {isAttractMode ? (
@@ -163,6 +163,16 @@ export default function KioskLayout() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Branding watermark */}
+      <div className="absolute bottom-1 left-0 right-0 text-center pointer-events-none z-50">
+        <span
+          className="text-[9px] tracking-[0.35em] uppercase text-white/[0.08]"
+          style={{ fontFamily: "'Orbitron', sans-serif" }}
+        >
+          Idea Sandbox LLC
+        </span>
+      </div>
     </div>
   );
 }
