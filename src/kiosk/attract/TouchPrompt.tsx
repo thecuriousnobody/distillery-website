@@ -95,12 +95,11 @@ export default function TouchPrompt() {
                 &#x2697;
               </span>
               <p
-                className="text-brutal-accent mt-1"
+                className="text-white mt-1.5"
                 style={{
-                  fontFamily: "'Sora', sans-serif",
-                  fontWeight: 300,
-                  fontSize: "10px",
-                  letterSpacing: "0.3em",
+                  fontFamily: "'Michroma', sans-serif",
+                  fontSize: "11px",
+                  letterSpacing: "0.35em",
                 }}
               >
                 TOUCH
