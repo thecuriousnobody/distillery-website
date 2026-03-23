@@ -104,7 +104,7 @@ async function searchSerper(query: string): Promise<SerperOrganic[]> {
       return [];
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as { organic?: SerperOrganic[] };
     return (data.organic || []).slice(0, 5);
   } catch (err) {
     console.error("Serper search error:", err);

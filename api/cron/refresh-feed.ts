@@ -40,8 +40,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
          WHERE title IS NOT NULL AND title != ''
            AND source NOT IN ('reddit')
          ORDER BY detected_at DESC LIMIT 10`
-      ).then((r) => {
-        const raw = r.rows.map((row) => ({
+      ).then((r: { rows: Record<string, unknown>[] }) => {
+        const raw = r.rows.map((row: Record<string, unknown>) => ({
           title: (row.title as string) || "",
           description: (row.description as string) || "",
           source: (row.source as string) || "",
