@@ -51,6 +51,34 @@ export default function KioskLayout() {
   // 2 minutes idle in interactive mode → return to attract mode
   useIdleTimer(enterAttractMode, 120_000, !isAttractMode && !isTransitioning);
 
+  // Wake Lock — prevent screen from dimming/sleeping (kiosk stays on)
+  useEffect(() => {
+    let wakeLock: WakeLockSentinel | null = null;
+
+    const requestWakeLock = async () => {
+      try {
+        if ("wakeLock" in navigator) {
+          wakeLock = await navigator.wakeLock.request("screen");
+        }
+      } catch {
+        // Wake lock can fail if tab is not visible — silently ignore
+      }
+    };
+
+    requestWakeLock();
+
+    // Re-acquire on tab visibility change (browser releases it when hidden)
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") requestWakeLock();
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      wakeLock?.release();
+    };
+  }, []);
+
   return (
     <div className="h-screen w-screen bg-brutal-black flex flex-col overflow-hidden relative">
       {/* Header — minimal in attract mode, full in interactive */}
@@ -112,12 +140,19 @@ export default function KioskLayout() {
                       opacity: 0,
                     }}
                     transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                    className="text-center"
+                    className="text-center flex flex-col items-center"
                   >
-                    <h1 className="font-display text-4xl text-brutal-white tracking-wider leading-none">
+                    <h1
+                      className="text-4xl text-brutal-white tracking-wider leading-none"
+                      style={{ fontFamily: "'Michroma', sans-serif" }}
+                    >
                       DISTILLERY
                     </h1>
-                    <h1 className="font-display text-4xl text-brutal-accent tracking-wider leading-none">
+                    <span className="text-3xl my-1">&#x2697;</span>
+                    <h1
+                      className="text-4xl text-brutal-accent tracking-wider leading-none"
+                      style={{ fontFamily: "'Michroma', sans-serif" }}
+                    >
                       LABS
                     </h1>
                     {/* Shrinking glow */}
