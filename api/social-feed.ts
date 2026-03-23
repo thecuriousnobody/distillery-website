@@ -69,8 +69,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         let img = (row.image_url as string) || "";
         const platform = detectPlatform(link);
 
-        // LinkedIn images from shared articles are often unrelated to the post
-        if (platform === "linkedin" && img.includes("articleshare")) {
+        // LinkedIn images are unreliable: video thumbnails, shared article previews,
+        // and company cover photos often don't match the actual post content.
+        // Instagram images are reliable, so prefer those via cross-platform dedup below.
+        if (platform === "linkedin") {
           img = "";
         }
 
@@ -98,7 +100,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const socialPosts: typeof allPosts = [];
 
     for (const post of allPosts) {
-      const key = (post.title || "").toLowerCase().slice(0, 60).trim();
+      // Normalize: strip stop words and punctuation for fuzzy cross-platform matching
+      const key = normalizeTitle(post.title || "");
       if (!key) { socialPosts.push(post); continue; }
       const priority = platformPriority[post.platform] ?? 3;
       const existing = seenTitles.get(key);
@@ -230,6 +233,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       lastUpdated: null,
     });
   }
+}
+
+function normalizeTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/\b(the|a|an|and|or|for|in|at|to|of|is|are|was|we|our|it|its)\b/g, "")
+    .replace(/[^a-z0-9]/g, "")
+    .slice(0, 50);
 }
 
 function detectPlatform(url: string): string {
