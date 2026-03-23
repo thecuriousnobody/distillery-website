@@ -20,7 +20,7 @@ export default function TouchPrompt() {
       {/* === VERTICAL LAYOUT === */}
       <div className="flex flex-col items-center relative z-10 h-full justify-center gap-0">
 
-        {/* DISTILLERY — vertical letters */}
+        {/* DISTILLERY — vertical letters, thicker */}
         <motion.div
           animate={{ opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -29,8 +29,12 @@ export default function TouchPrompt() {
           {"DISTILLERY".split("").map((letter, i) => (
             <span
               key={i}
-              className="text-brutal-white text-2xl tracking-widest"
-              style={{ fontFamily: "'Michroma', sans-serif", lineHeight: "1.3" }}
+              className="text-brutal-white text-3xl tracking-widest"
+              style={{
+                fontFamily: "'Michroma', sans-serif",
+                lineHeight: "1.25",
+                textShadow: "0 0 20px rgba(245,245,245,0.15)",
+              }}
             >
               {letter}
             </span>
@@ -38,35 +42,35 @@ export default function TouchPrompt() {
         </motion.div>
 
         {/* Taper line into orb */}
-        <div className="w-px h-6 bg-gradient-to-b from-brutal-accent/30 to-brutal-accent/10" />
+        <div className="w-px h-5 bg-gradient-to-b from-brutal-accent/30 to-brutal-accent/10" />
 
         {/* Touch orb with alembic */}
         <div className="relative flex items-center justify-center my-2">
-          {/* Single ambient glow */}
+          {/* Ambient glow — more prominent */}
           <motion.div
-            animate={{ scale: [1, 1.12, 1], opacity: [0.06, 0.02, 0.06] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.05, 0.12] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
             className="absolute rounded-full bg-brutal-accent"
-            style={{ width: "240px", height: "240px", filter: "blur(20px)" }}
+            style={{ width: "280px", height: "280px", filter: "blur(25px)" }}
           />
 
-          {/* The orb — 35% larger */}
+          {/* The orb */}
           <motion.div
             animate={{
-              scale: [1, 1.025, 1],
+              scale: [1, 1.03, 1],
               boxShadow: [
-                "0 0 40px rgba(232,93,4,0.3), 0 0 100px rgba(232,93,4,0.1), inset 0 0 40px rgba(232,93,4,0.04)",
-                "0 0 60px rgba(232,93,4,0.45), 0 0 130px rgba(232,93,4,0.18), inset 0 0 60px rgba(232,93,4,0.06)",
-                "0 0 40px rgba(232,93,4,0.3), 0 0 100px rgba(232,93,4,0.1), inset 0 0 40px rgba(232,93,4,0.04)",
+                "0 0 50px rgba(232,93,4,0.4), 0 0 120px rgba(232,93,4,0.15), inset 0 0 40px rgba(232,93,4,0.05)",
+                "0 0 80px rgba(232,93,4,0.55), 0 0 160px rgba(232,93,4,0.25), inset 0 0 60px rgba(232,93,4,0.08)",
+                "0 0 50px rgba(232,93,4,0.4), 0 0 120px rgba(232,93,4,0.15), inset 0 0 40px rgba(232,93,4,0.05)",
               ],
             }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="relative rounded-full border border-brutal-accent/40 flex flex-col items-center justify-center"
+            className="relative rounded-full border-2 border-brutal-accent/50 flex flex-col items-center justify-center"
             style={{
               width: "148px",
               height: "148px",
               background:
-                "radial-gradient(circle at 38% 38%, rgba(232,93,4,0.08) 0%, rgba(10,10,10,0.96) 45%, rgba(10,10,10,0.99) 100%)",
+                "radial-gradient(circle at 38% 38%, rgba(232,93,4,0.1) 0%, rgba(10,10,10,0.95) 45%, rgba(10,10,10,0.99) 100%)",
               backdropFilter: "blur(8px)",
             }}
           >
@@ -78,19 +82,19 @@ export default function TouchPrompt() {
                 left: "16%",
                 width: "32%",
                 height: "22%",
-                background: "radial-gradient(ellipse, rgba(255,255,255,0.05) 0%, transparent 70%)",
+                background: "radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, transparent 70%)",
                 transform: "rotate(-15deg)",
               }}
             />
 
             <motion.div
-              animate={{ opacity: [0.55, 1, 0.55] }}
+              animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
               className="text-center"
             >
               <span
                 className="text-4xl block"
-                style={{ filter: "drop-shadow(0 0 8px rgba(232,93,4,0.5))" }}
+                style={{ filter: "drop-shadow(0 0 10px rgba(232,93,4,0.6))" }}
               >
                 &#x2697;
               </span>
@@ -98,8 +102,9 @@ export default function TouchPrompt() {
                 className="text-white mt-1.5"
                 style={{
                   fontFamily: "'Michroma', sans-serif",
-                  fontSize: "11px",
-                  letterSpacing: "0.35em",
+                  fontSize: "13px",
+                  letterSpacing: "0.3em",
+                  textShadow: "0 0 12px rgba(255,255,255,0.4), 0 0 30px rgba(255,255,255,0.15)",
                 }}
               >
                 TOUCH
@@ -109,9 +114,9 @@ export default function TouchPrompt() {
         </div>
 
         {/* Taper line from orb */}
-        <div className="w-px h-6 bg-gradient-to-t from-brutal-accent/30 to-brutal-accent/10" />
+        <div className="w-px h-5 bg-gradient-to-t from-brutal-accent/30 to-brutal-accent/10" />
 
-        {/* LABS — vertical letters */}
+        {/* LABS — vertical letters, thicker */}
         <motion.div
           animate={{ opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
@@ -120,8 +125,12 @@ export default function TouchPrompt() {
           {"LABS".split("").map((letter, i) => (
             <span
               key={i}
-              className="text-brutal-accent text-2xl tracking-widest"
-              style={{ fontFamily: "'Michroma', sans-serif", lineHeight: "1.3" }}
+              className="text-brutal-accent text-3xl tracking-widest"
+              style={{
+                fontFamily: "'Michroma', sans-serif",
+                lineHeight: "1.25",
+                textShadow: "0 0 20px rgba(232,93,4,0.2)",
+              }}
             >
               {letter}
             </span>

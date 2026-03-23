@@ -97,7 +97,39 @@ export default function KioskLayout() {
             <p className="font-mono text-[10px] text-brutal-mid tracking-[0.2em]">PEORIA, ILLINOIS</p>
           </div>
         )}
-        <LiveClock />
+        <div className="flex items-center gap-3">
+          <div
+            className="inline-flex items-center gap-2 select-none"
+            style={{
+              fontFamily: "'Sora', sans-serif",
+              fontSize: "10px",
+              fontWeight: 300,
+              letterSpacing: "2px",
+              color: "#F5F5F5",
+              opacity: 0.35,
+              whiteSpace: "nowrap",
+              textShadow:
+                "0 0 8px rgba(245,245,245,0.3), 0 0 20px rgba(245,245,245,0.1)",
+            }}
+          >
+            <svg width="12" height="16" viewBox="0 0 56 80" fill="none"
+              style={{ filter: "drop-shadow(0 0 6px rgba(245,245,245,0.3))" }}
+            >
+              <circle cx="28" cy="14" r="11" fill="#F5F5F5" opacity="0.85" />
+              <line x1="28" y1="26" x2="28" y2="54" stroke="#F5F5F5" strokeWidth="4" strokeLinecap="round" opacity="0.75" />
+              <line x1="28" y1="34" x2="12" y2="48" stroke="#F5F5F5" strokeWidth="3.5" strokeLinecap="round" opacity="0.55" />
+              <line x1="28" y1="34" x2="44" y2="48" stroke="#F5F5F5" strokeWidth="3.5" strokeLinecap="round" opacity="0.55" />
+              <line x1="28" y1="54" x2="14" y2="76" stroke="#F5F5F5" strokeWidth="3.5" strokeLinecap="round" opacity="0.35" />
+              <line x1="28" y1="54" x2="42" y2="76" stroke="#F5F5F5" strokeWidth="3.5" strokeLinecap="round" opacity="0.35" />
+            </svg>
+            <span style={{ opacity: 0.5 }}>|</span>
+            {" the curious nobody "}
+            <span style={{ opacity: 0.5 }}>|</span>
+            {" the idea sandbox llc "}
+          </div>
+          <span className="text-gray-600 mx-1">|</span>
+          <LiveClock />
+        </div>
       </header>
 
       <AnimatePresence mode="wait">
@@ -199,15 +231,6 @@ export default function KioskLayout() {
         )}
       </AnimatePresence>
 
-      {/* Branding watermark */}
-      <div className="absolute bottom-1 left-0 right-0 text-center pointer-events-none z-50">
-        <span
-          className="text-[9px] tracking-[0.35em] uppercase text-white/[0.08]"
-          style={{ fontFamily: "'Orbitron', sans-serif" }}
-        >
-          Idea Sandbox LLC
-        </span>
-      </div>
     </div>
   );
 }
