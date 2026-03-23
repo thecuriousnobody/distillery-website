@@ -1,7 +1,6 @@
-import * as pg from "pg";
-const { Pool } = pg;
+import { Pool } from "@neondatabase/serverless";
 
-let pool: InstanceType<typeof Pool> | null = null;
+let pool: Pool | null = null;
 
 export function getPool() {
   if (!pool) {
@@ -15,7 +14,6 @@ export function getPool() {
       max: 1,
       connectionTimeoutMillis: 3000,
       idleTimeoutMillis: 10000,
-      ssl: { rejectUnauthorized: false },
     });
   }
   return pool;
