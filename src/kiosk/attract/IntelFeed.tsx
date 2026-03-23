@@ -140,15 +140,13 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
             {items.map((item, i) => {
               const seed = hashCode(`${item.headline}`) % 100;
 
-              // Size tiers — mostly large/medium, small for occasional rhythm
-              // ~12% JUMBO  — huge headline, fills the width, unmissable
-              // ~30% LARGE  — big and bold with builder angle
-              // ~40% MEDIUM — standard readable size
-              // ~18% WHISPER — small, creates texture between big items
-              const isJumbo = seed < 12;
-              const isLarge = seed >= 12 && seed < 42;
-              const isMedium = seed >= 42 && seed < 82;
-              // rest is whisper
+              // Size tiers — all readable, no tiny text
+              // ~15% JUMBO  — huge headline, fills the width, unmissable
+              // ~40% LARGE  — big and bold with builder angle
+              // ~45% MEDIUM — standard readable size
+              const isJumbo = seed < 15;
+              const isLarge = seed >= 15 && seed < 55;
+              const isMedium = true; // everything else is medium
 
               if (isJumbo) {
                 return (

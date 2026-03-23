@@ -18,7 +18,7 @@ export default function TouchPrompt() {
       />
 
       {/* === VERTICAL LAYOUT === */}
-      <div className="flex flex-col items-center relative z-10 h-full justify-center gap-0">
+      <div className="flex flex-col items-center relative z-10 h-full justify-center gap-0 pt-10">
 
         {/* DISTILLERY — vertical letters, thicker */}
         <motion.div
@@ -29,7 +29,7 @@ export default function TouchPrompt() {
           {"DISTILLERY".split("").map((letter, i) => (
             <span
               key={i}
-              className="text-brutal-white text-3xl tracking-widest"
+              className="text-brutal-white text-4xl font-bold tracking-widest"
               style={{
                 fontFamily: "'Michroma', sans-serif",
                 lineHeight: "1.25",
@@ -118,7 +118,7 @@ export default function TouchPrompt() {
           {"LABS".split("").map((letter, i) => (
             <span
               key={i}
-              className="text-brutal-accent text-3xl tracking-widest"
+              className="text-brutal-accent text-4xl font-bold tracking-widest"
               style={{
                 fontFamily: "'Michroma', sans-serif",
                 lineHeight: "1.25",
