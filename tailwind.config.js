@@ -11,13 +11,16 @@ export default {
         'brutal-black': '#0a0a0a',
         'brutal-white': '#f5f5f5',
         'brutal-gray': '#1a1a1a',
-        'brutal-accent': '#ff3e00', // Intense orange-red
+        'brutal-accent': '#E85D04', // Burnt orange
+        'brutal-highlight': '#FF6B0A', // Bright orange highlights
         'brutal-yellow': '#ffcc00',
         'brutal-blue': '#0066ff',
+        'brutal-mid': '#888888', // Secondary text
       },
       fontFamily: {
         'mono': ['JetBrains Mono', 'SF Mono', 'Fira Code', 'monospace'],
-        'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        'display': ['Sora', 'Inter', 'system-ui', 'sans-serif'],
+        'body': ['Sora', 'Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'massive': ['12rem', { lineHeight: '0.85' }],

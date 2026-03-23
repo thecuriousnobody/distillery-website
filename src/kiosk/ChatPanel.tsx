@@ -12,8 +12,6 @@ const QUICK_ACTIONS = [
   "Tell me about gBETA",
 ];
 
-const INACTIVITY_TIMEOUT = 2 * 60 * 1000; // 2 minutes
-
 // Web Speech API types
 interface SpeechRecognitionEvent {
   results: { [index: number]: { [index: number]: { transcript: string } }; length: number };
@@ -45,7 +43,6 @@ export default function ChatPanel() {
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inactivityTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const transcriptRef = useRef("");
 
@@ -57,25 +54,6 @@ export default function ChatPanel() {
     setMessages([]);
     setInput("");
   }, [setMessages]);
-
-  // Auto-reset after inactivity
-  useEffect(() => {
-    const resetTimer = () => {
-      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-      if (messages.length > 0) {
-        inactivityTimer.current = setTimeout(resetChat, INACTIVITY_TIMEOUT);
-      }
-    };
-
-    resetTimer();
-
-    const events = ["mousedown", "keydown", "touchstart", "scroll"];
-    events.forEach((e) => window.addEventListener(e, resetTimer));
-    return () => {
-      events.forEach((e) => window.removeEventListener(e, resetTimer));
-      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-    };
-  }, [messages.length, resetChat]);
 
   // Auto-scroll to bottom
   useEffect(() => {

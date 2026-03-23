@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react";
 import { useCalendarEvents } from "./useCalendarEvents";
+import { useRoomBookings } from "./hooks/useRoomBookings";
 import EventTile from "./EventTile";
 import EventModal from "./EventModal";
+import RoomSchedule from "./RoomSchedule";
 import type { CalendarEvent } from "./types";
 
 function toDateString(d: Date): string {
@@ -60,6 +62,7 @@ export default function CalendarPanel() {
   });
 
   const { events, loading, error } = useCalendarEvents(selectedDate);
+  const { rooms, bookings, loading: roomsLoading } = useRoomBookings(selectedDate);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
 
   const weeks = useMemo(
@@ -208,6 +211,24 @@ export default function CalendarPanel() {
               onClick={() => setSelectedEvent(event)}
             />
           ))}
+
+          {/* Room bookings timeline */}
+          {(rooms.length > 0 || roomsLoading) && (
+            <div className="mt-4 pt-3 border-t border-gray-700">
+              <div className="flex items-center gap-2 px-0 mb-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-brutal-accent" />
+                <span className="font-mono text-[10px] text-brutal-accent tracking-[0.2em] font-bold">
+                  ROOM BOOKINGS
+                </span>
+              </div>
+              <RoomSchedule
+                rooms={rooms}
+                bookings={bookings}
+                date={selectedDate}
+                loading={roomsLoading}
+              />
+            </div>
+          )}
         </div>
       </div>
 
