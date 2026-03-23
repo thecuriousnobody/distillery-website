@@ -63,13 +63,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ]);
 
     // Map scraped social media posts (left panel)
-    const socialPosts = socialResult.rows.map(
+    const allPosts = socialResult.rows.map(
       (row: Record<string, unknown>) => {
         const link = (row.original_link as string) || "";
-        const img = (row.image_url as string) || "";
+        let img = (row.image_url as string) || "";
+        const platform = detectPlatform(link);
+
+        // LinkedIn images from shared articles are often unrelated to the post
+        if (platform === "linkedin" && img.includes("articleshare")) {
+          img = "";
+        }
+
         return {
           id: `social-${row.id}`,
-          platform: detectPlatform(link),
+          platform,
           source: (row.organization as string) || "Peoria Ecosystem",
           title: (row.title as string) || "",
           text: (row.description as string) || "",
@@ -83,6 +90,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         };
       }
     );
+
+    // Cross-platform dedup: same content posted on Instagram + LinkedIn + Facebook
+    // Prefer Instagram (reliable images) > LinkedIn > Facebook (no images)
+    const platformPriority: Record<string, number> = { instagram: 0, linkedin: 1, facebook: 2 };
+    const seenTitles = new Map<string, { priority: number; index: number }>();
+    const socialPosts: typeof allPosts = [];
+
+    for (const post of allPosts) {
+      const key = (post.title || "").toLowerCase().slice(0, 60).trim();
+      if (!key) { socialPosts.push(post); continue; }
+      const priority = platformPriority[post.platform] ?? 3;
+      const existing = seenTitles.get(key);
+      if (!existing) {
+        seenTitles.set(key, { priority, index: socialPosts.length });
+        socialPosts.push(post);
+      } else if (priority < existing.priority) {
+        // Better platform — replace
+        socialPosts[existing.index] = post;
+        seenTitles.set(key, { priority, index: existing.index });
+      }
+      // else skip — we already have a better version
+    }
 
     // Batch-lookup OG images for signal URLs from cache
     const signalUrls = signalsResult.rows
