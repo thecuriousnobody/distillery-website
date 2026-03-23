@@ -14,30 +14,30 @@ export default function EventCard({ event }: { event: StartupEvent }) {
       onClick={handleTap}
     >
       {/* Header badges */}
-      <div className="flex items-center gap-2 mb-4">
-        <span className="font-mono text-xs font-bold px-2 py-1 bg-brutal-yellow text-brutal-black">
+      <div className="flex items-center gap-2 mb-5">
+        <span className="font-mono text-sm font-bold px-3 py-1.5 bg-brutal-yellow text-brutal-black">
           EVENT
         </span>
         {event.platform && (
-          <span className="font-mono text-xs font-bold px-2 py-1 border border-brutal-yellow text-brutal-yellow">
+          <span className="font-mono text-sm font-bold px-3 py-1.5 border border-brutal-yellow text-brutal-yellow">
             {event.platform.toUpperCase()}
           </span>
         )}
         {event.category && (
-          <span className="font-mono text-xs text-gray-500">
+          <span className="font-mono text-sm text-gray-500">
             {event.category}
           </span>
         )}
       </div>
 
       {/* Event name */}
-      <h3 className="font-display text-lg text-brutal-white font-bold leading-tight mb-3">
+      <h3 className="font-display text-3xl text-brutal-white font-bold leading-tight mb-4">
         {event.name}
       </h3>
 
       {/* Description */}
       {event.description && (
-        <p className="font-mono text-sm text-gray-400 leading-relaxed flex-1 line-clamp-3">
+        <p className="font-mono text-lg text-gray-400 leading-relaxed flex-1 line-clamp-3">
           {event.description}
         </p>
       )}

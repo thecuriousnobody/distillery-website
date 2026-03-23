@@ -129,13 +129,13 @@ function FallbackCard({
 }) {
   return (
     <div className="bg-brutal-gray border-2 border-brutal-accent p-8 h-full flex flex-col justify-center">
-      <span className="font-mono text-xs font-bold text-brutal-accent mb-4 tracking-widest">
+      <span className="font-mono text-sm font-bold text-brutal-accent mb-4 tracking-widest">
         {data.icon}
       </span>
-      <h3 className="font-display text-3xl text-brutal-white tracking-wide mb-4">
+      <h3 className="font-display text-5xl text-brutal-white tracking-wide mb-5">
         {data.title}
       </h3>
-      <p className="font-body text-base text-gray-400 leading-relaxed">
+      <p className="font-body text-xl text-gray-400 leading-relaxed">
         {data.description}
       </p>
     </div>

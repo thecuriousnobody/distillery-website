@@ -50,29 +50,28 @@ export default function AttractMode({ onDismiss }: AttractModeProps) {
         if (e.key === "Enter" || e.key === " ") onDismiss();
       }}
     >
-      {/* Left 1/3 — Social media posts with images */}
-      {/* Gentle fade at edge nearest center — keeps text readable */}
+      {/* Left panel — Social media posts with images */}
       <div
-        className="w-1/3 relative z-10"
+        className="w-[42%] relative z-10"
         style={{
-          maskImage: "linear-gradient(to right, black 88%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to right, black 88%, transparent 100%)",
+          maskImage: "linear-gradient(to right, black 85%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, black 85%, transparent 100%)",
         }}
       >
         <SocialCarousel cards={socialCards} interval={8000} />
       </div>
 
-      {/* Middle 1/3 — Hourglass branding + touch CTA */}
-      <div className="w-1/3 relative z-20">
+      {/* Center — Vertical branding + touch CTA */}
+      <div className="w-[16%] relative z-20">
         <TouchPrompt />
       </div>
 
-      {/* Right 1/3 — Builder Radar: AI-digested insights */}
+      {/* Right panel — Builder Radar: AI-digested insights */}
       <div
-        className="w-1/3 relative z-10"
+        className="w-[42%] relative z-10"
         style={{
-          maskImage: "linear-gradient(to left, black 88%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to left, black 88%, transparent 100%)",
+          maskImage: "linear-gradient(to left, black 85%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to left, black 85%, transparent 100%)",
         }}
       >
         <IntelFeed cards={radarCards} digested={digested} />

@@ -113,11 +113,11 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
       {/* Header */}
       <div className="flex-none px-5 pt-5 pb-3 z-10">
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-brutal-accent animate-pulse" />
-          <span className="font-mono text-[9px] text-brutal-accent tracking-[0.3em] font-bold">
+          <span className="w-2 h-2 rounded-full bg-brutal-accent animate-pulse" />
+          <span className="font-mono text-xs text-brutal-accent tracking-[0.3em] font-bold">
             BUILDER RADAR
           </span>
-          <span className="font-mono text-[8px] text-gray-600 ml-auto">
+          <span className="font-mono text-[10px] text-gray-600 ml-auto">
             LIVE
           </span>
         </div>
@@ -154,24 +154,24 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
                 return (
                   <div
                     key={`${pass}-${i}`}
-                    className={`py-6 ${item.url ? "cursor-pointer" : ""}`}
+                    className={`py-8 ${item.url ? "cursor-pointer" : ""}`}
                     onClick={(e) => {
                       if (item.url) { e.stopPropagation(); window.open(item.url, "_blank", "noopener"); }
                     }}
                   >
-                    <span className="font-mono text-[10px] font-bold text-brutal-accent tracking-[0.3em] block mb-3">
+                    <span className="font-mono text-sm font-bold text-brutal-accent tracking-[0.3em] block mb-4">
                       {item.tag}
                     </span>
-                    <h2 className="font-display text-4xl font-extrabold leading-[1.05] text-brutal-white mb-3">
+                    <h2 className="font-display text-8xl font-extrabold leading-[0.95] text-brutal-white mb-4">
                       {item.headline}
                     </h2>
                     {item.builderAngle && (
-                      <p className="font-body text-base text-brutal-accent/90 leading-relaxed border-l-2 border-brutal-accent/40 pl-4">
+                      <p className="font-body text-2xl text-brutal-accent/90 leading-relaxed border-l-4 border-brutal-accent/40 pl-5">
                         {item.builderAngle}
                       </p>
                     )}
                     {item.source && (
-                      <span className="font-mono text-[9px] text-gray-500 block mt-3">
+                      <span className="font-mono text-xs text-gray-500 block mt-4">
                         {item.source}
                       </span>
                     )}
@@ -183,19 +183,19 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
                 return (
                   <div
                     key={`${pass}-${i}`}
-                    className={`border-l-2 border-brutal-accent/30 pl-4 py-4 ${item.url ? "cursor-pointer" : ""}`}
+                    className={`border-l-4 border-brutal-accent/30 pl-5 py-6 ${item.url ? "cursor-pointer" : ""}`}
                     onClick={(e) => {
                       if (item.url) { e.stopPropagation(); window.open(item.url, "_blank", "noopener"); }
                     }}
                   >
-                    <span className="font-mono text-[8px] font-bold text-brutal-accent/50 tracking-[0.2em] block mb-2">
+                    <span className="font-mono text-xs font-bold text-brutal-accent/50 tracking-[0.2em] block mb-3">
                       {item.tag}
                     </span>
-                    <h3 className="font-display text-xl font-extrabold leading-snug text-brutal-white mb-2">
+                    <h3 className="font-display text-5xl font-extrabold leading-snug text-brutal-white mb-3">
                       {item.headline}
                     </h3>
                     {item.builderAngle && (
-                      <p className="font-body text-sm text-brutal-accent/70 leading-relaxed">
+                      <p className="font-body text-xl text-brutal-accent/70 leading-relaxed">
                         {item.builderAngle}
                       </p>
                     )}
@@ -207,32 +207,32 @@ export default function IntelFeed({ cards, digested = [] }: IntelFeedProps) {
                 return (
                   <div
                     key={`${pass}-${i}`}
-                    className={`border-l border-gray-700 pl-3 py-2.5 ${item.url ? "cursor-pointer" : ""}`}
+                    className={`border-l-2 border-gray-700 pl-4 py-4 ${item.url ? "cursor-pointer" : ""}`}
                     onClick={(e) => {
                       if (item.url) { e.stopPropagation(); window.open(item.url, "_blank", "noopener"); }
                     }}
                   >
-                    <span className="font-mono text-[7px] font-bold text-brutal-accent/40 tracking-[0.15em] block mb-1">
+                    <span className="font-mono text-[10px] font-bold text-brutal-accent/40 tracking-[0.15em] block mb-2">
                       {item.tag}
                     </span>
-                    <h3 className="font-display text-sm font-bold leading-snug text-brutal-white">
+                    <h3 className="font-display text-3xl font-bold leading-snug text-brutal-white">
                       {item.headline}
                     </h3>
                   </div>
                 );
               }
 
-              // Whisper — tiny, atmospheric
+              // Whisper — still readable from a desk distance
               return (
                 <div
                   key={`${pass}-${i}`}
-                  className={`py-1 pl-2 ${item.url ? "cursor-pointer" : ""}`}
+                  className={`py-2 pl-3 ${item.url ? "cursor-pointer" : ""}`}
                   onClick={(e) => {
                     if (item.url) { e.stopPropagation(); window.open(item.url, "_blank", "noopener"); }
                   }}
                 >
-                  <p className="font-mono text-[10px] text-gray-500 leading-snug">
-                    <span className="text-brutal-accent/30 mr-1.5">{item.tag}</span>
+                  <p className="font-mono text-lg text-gray-500 leading-snug">
+                    <span className="text-brutal-accent/30 mr-2">{item.tag}</span>
                     {item.headline}
                   </p>
                 </div>
