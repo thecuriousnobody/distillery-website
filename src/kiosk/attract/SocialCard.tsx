@@ -38,7 +38,7 @@ export default function SocialCard({ post }: { post: SocialPost }) {
           <img
             src={post.imageUrl}
             alt=""
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover"
             onError={() => {
               console.warn("[SocialCard] Image failed:", post.imageUrl?.slice(0, 80));
               setImgFailed(true);
