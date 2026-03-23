@@ -29,7 +29,7 @@ export default function TouchPrompt() {
           {"DISTILLERY".split("").map((letter, i) => (
             <span
               key={i}
-              className="text-brutal-white text-4xl font-bold tracking-widest"
+              className="text-brutal-white text-[1.75rem] font-bold tracking-widest"
               style={{
                 fontFamily: "'Michroma', sans-serif",
                 lineHeight: "1.25",
@@ -118,7 +118,7 @@ export default function TouchPrompt() {
           {"LABS".split("").map((letter, i) => (
             <span
               key={i}
-              className="text-brutal-accent text-4xl font-bold tracking-widest"
+              className="text-brutal-accent text-[1.75rem] font-bold tracking-widest"
               style={{
                 fontFamily: "'Michroma', sans-serif",
                 lineHeight: "1.25",
