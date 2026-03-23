@@ -6,11 +6,17 @@ import { conciergeTransport, getMessageText } from "./conciergeTransport";
 function parseChips(text: string): { cleanText: string; chips: string[] } {
   const match = text.match(/<!--\s*CHIPS:\s*(\[.*?\])\s*-->/s);
   if (!match) return { cleanText: text, chips: [] };
+  // Always strip the comment from displayed text
+  const cleanText = text.replace(match[0], "").trim();
   try {
-    const chips = JSON.parse(match[1]);
-    return { cleanText: text.replace(match[0], "").trim(), chips };
+    // Normalize smart/curly quotes to ASCII before parsing
+    const normalized = match[1]
+      .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"')
+      .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'");
+    const chips = JSON.parse(normalized);
+    return { cleanText, chips };
   } catch {
-    return { cleanText: text, chips: [] };
+    return { cleanText, chips: [] };
   }
 }
 
