@@ -3,6 +3,17 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import { conciergeTransport, getMessageText } from "./conciergeTransport";
 
+function parseChips(text: string): { cleanText: string; chips: string[] } {
+  const match = text.match(/<!--\s*CHIPS:\s*(\[.*?\])\s*-->/s);
+  if (!match) return { cleanText: text, chips: [] };
+  try {
+    const chips = JSON.parse(match[1]);
+    return { cleanText: text.replace(match[0], "").trim(), chips };
+  } catch {
+    return { cleanText: text, chips: [] };
+  }
+}
+
 const QUICK_ACTIONS = [
   "What's happening today?",
   "Is there a room available?",
@@ -170,34 +181,52 @@ export default function ChatPanel() {
         ) : (
           <>
             {messages.map((message, index) => {
-              const text = getMessageText(message);
-              if (!text) return null;
+              const rawText = getMessageText(message);
+              if (!rawText) return null;
               const isLastMessage = index === messages.length - 1;
               const isStreaming = isLastMessage && message.role === "assistant" && (status === "streaming" || status === "submitted");
+              const isLastCompleted = isLastMessage && message.role === "assistant" && !isStreaming;
+              const { cleanText, chips } = message.role === "assistant" && !isStreaming
+                ? parseChips(rawText)
+                : { cleanText: rawText, chips: [] };
               return (
-                <div
-                  key={message.id}
-                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                >
+                <div key={message.id}>
                   <div
-                    className={`max-w-[85%] px-4 py-3 font-mono text-sm leading-relaxed ${
-                      message.role === "user"
-                        ? "bg-brutal-accent text-brutal-black"
-                        : "bg-brutal-gray text-brutal-white border border-gray-700"
-                    }`}
+                    className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                   >
-                    {message.role === "assistant" ? (
-                      isStreaming ? (
-                        <div className="whitespace-pre-wrap">{text}</div>
+                    <div
+                      className={`max-w-[85%] px-4 py-3 font-mono text-sm leading-relaxed ${
+                        message.role === "user"
+                          ? "bg-brutal-accent text-brutal-black"
+                          : "bg-brutal-gray text-brutal-white border border-gray-700"
+                      }`}
+                    >
+                      {message.role === "assistant" ? (
+                        isStreaming ? (
+                          <div className="whitespace-pre-wrap">{cleanText}</div>
+                        ) : (
+                          <div className="prose prose-invert prose-sm max-w-none [&_p]:mb-2 [&_ul]:mb-2 [&_ol]:mb-2 [&_li]:mb-1 [&_strong]:text-brutal-accent [&_h1]:text-lg [&_h1]:font-bold [&_h1]:text-brutal-accent [&_h1]:mb-2 [&_h1]:mt-3 [&_h2]:text-base [&_h2]:font-bold [&_h2]:text-brutal-accent [&_h2]:mb-2 [&_h2]:mt-3 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-brutal-accent [&_h3]:mb-1 [&_h3]:mt-2 [&_table]:w-full [&_table]:border-collapse [&_table]:my-2 [&_th]:text-left [&_th]:border-b [&_th]:border-gray-600 [&_th]:pb-1 [&_th]:pr-3 [&_th]:text-brutal-accent [&_td]:border-b [&_td]:border-gray-700/50 [&_td]:py-1 [&_td]:pr-3 [&_a]:text-brutal-accent [&_a]:underline [&_hr]:border-gray-700 [&_hr]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-brutal-accent [&_blockquote]:pl-3 [&_blockquote]:text-gray-400">
+                            <ReactMarkdown>{cleanText}</ReactMarkdown>
+                          </div>
+                        )
                       ) : (
-                        <div className="prose prose-invert prose-sm max-w-none [&_p]:mb-2 [&_ul]:mb-2 [&_ol]:mb-2 [&_li]:mb-1 [&_strong]:text-brutal-accent [&_h1]:text-lg [&_h1]:font-bold [&_h1]:text-brutal-accent [&_h1]:mb-2 [&_h1]:mt-3 [&_h2]:text-base [&_h2]:font-bold [&_h2]:text-brutal-accent [&_h2]:mb-2 [&_h2]:mt-3 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-brutal-accent [&_h3]:mb-1 [&_h3]:mt-2 [&_table]:w-full [&_table]:border-collapse [&_table]:my-2 [&_th]:text-left [&_th]:border-b [&_th]:border-gray-600 [&_th]:pb-1 [&_th]:pr-3 [&_th]:text-brutal-accent [&_td]:border-b [&_td]:border-gray-700/50 [&_td]:py-1 [&_td]:pr-3 [&_a]:text-brutal-accent [&_a]:underline [&_hr]:border-gray-700 [&_hr]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-brutal-accent [&_blockquote]:pl-3 [&_blockquote]:text-gray-400">
-                          <ReactMarkdown>{text}</ReactMarkdown>
-                        </div>
-                      )
-                    ) : (
-                      text
-                    )}
+                        cleanText
+                      )}
+                    </div>
                   </div>
+                  {isLastCompleted && chips.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2 ml-0">
+                      {chips.map((chip) => (
+                        <button
+                          key={chip}
+                          onClick={() => sendQuickAction(chip)}
+                          className="font-mono text-xs px-3 py-1.5 border border-brutal-accent/60 text-brutal-accent hover:bg-brutal-accent hover:text-brutal-black transition-colors"
+                        >
+                          {chip}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })}
