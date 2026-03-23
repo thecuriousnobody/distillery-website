@@ -69,10 +69,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         let img = (row.image_url as string) || "";
         const platform = detectPlatform(link);
 
-        // LinkedIn images are unreliable: video thumbnails, shared article previews,
-        // and company cover photos often don't match the actual post content.
-        // Instagram images are reliable, so prefer those via cross-platform dedup below.
-        if (platform === "linkedin") {
+        // LinkedIn articleshare images are from shared links (e.g. Eventbrite),
+        // often unrelated to the post content. Feedshare images are from the
+        // actual post and are usually correct.
+        if (platform === "linkedin" && img.includes("articleshare")) {
           img = "";
         }
 
