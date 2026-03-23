@@ -46,29 +46,22 @@ export default function TouchPrompt() {
 
         {/* Touch orb with alembic */}
         <div className="relative flex items-center justify-center my-2">
-          {/* Ambient glow — more prominent */}
-          <motion.div
-            animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.05, 0.12] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute rounded-full bg-brutal-accent"
-            style={{ width: "280px", height: "280px", filter: "blur(25px)" }}
-          />
-
-          {/* The orb */}
+          {/* The orb — thick ring is the glow */}
           <motion.div
             animate={{
               scale: [1, 1.03, 1],
               boxShadow: [
-                "0 0 50px rgba(232,93,4,0.4), 0 0 120px rgba(232,93,4,0.15), inset 0 0 40px rgba(232,93,4,0.05)",
-                "0 0 80px rgba(232,93,4,0.55), 0 0 160px rgba(232,93,4,0.25), inset 0 0 60px rgba(232,93,4,0.08)",
-                "0 0 50px rgba(232,93,4,0.4), 0 0 120px rgba(232,93,4,0.15), inset 0 0 40px rgba(232,93,4,0.05)",
+                "0 0 30px rgba(232,93,4,0.35), 0 0 60px rgba(232,93,4,0.12), inset 0 0 30px rgba(232,93,4,0.06)",
+                "0 0 45px rgba(232,93,4,0.5), 0 0 80px rgba(232,93,4,0.2), inset 0 0 40px rgba(232,93,4,0.1)",
+                "0 0 30px rgba(232,93,4,0.35), 0 0 60px rgba(232,93,4,0.12), inset 0 0 30px rgba(232,93,4,0.06)",
               ],
             }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="relative rounded-full border-2 border-brutal-accent/50 flex flex-col items-center justify-center"
+            className="relative rounded-full flex flex-col items-center justify-center"
             style={{
               width: "148px",
               height: "148px",
+              border: "4px solid rgba(232,93,4,0.7)",
               background:
                 "radial-gradient(circle at 38% 38%, rgba(232,93,4,0.1) 0%, rgba(10,10,10,0.95) 45%, rgba(10,10,10,0.99) 100%)",
               backdropFilter: "blur(8px)",
