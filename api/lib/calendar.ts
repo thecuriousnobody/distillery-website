@@ -5,7 +5,8 @@ import { parseICS } from "./icsParser.js";
 
 const PROXIMITY_ICS_URL = "https://distillerylabs.proximity.app/events/ics";
 
-export const getCalendarEvents = tool({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getCalendarEvents = (tool as any)({
   description:
     "Get upcoming events from Distillery Labs (Proximity + Google Calendar). Use this to answer questions about what's happening today, this week, room availability, or upcoming events.",
   parameters: z.object({
@@ -20,8 +21,8 @@ export const getCalendarEvents = tool({
       .optional()
       .describe("Number of days to look ahead. Defaults to 1."),
   }),
-  execute: async (args) => {
-    const { date, daysAhead = 1 } = args || {};
+  execute: async (args: { date?: string; daysAhead?: number }) => {
+    const { date, daysAhead = 1 } = args;
 
     const now = date ? new Date(`${date}T00:00:00`) : new Date();
     const timeMin = new Date(now);

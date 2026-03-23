@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
              WHERE created_at > NOW() - INTERVAL '24 hours'
              ORDER BY created_at DESC LIMIT 24`
           )
-          .catch(() => ({ rows: [] })),
+          .catch((): { rows: Record<string, unknown>[] } => ({ rows: [] })),
         // Digested signals — aggregate last 24 hours
         pool
           .query(
@@ -54,7 +54,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
              WHERE created_at > NOW() - INTERVAL '24 hours'
              ORDER BY created_at DESC LIMIT 24`
           )
-          .catch(() => ({ rows: [] })),
+          .catch((): { rows: Record<string, unknown>[] } => ({ rows: [] })),
       ]);
 
     // Map scraped social media posts (left panel)
@@ -81,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Batch-lookup OG images for signal URLs from cache
     const signalUrls = signalsResult.rows
-      .map((r) => (r as Record<string, unknown>).source_url as string)
+      .map((r: Record<string, unknown>) => (r as Record<string, unknown>).source_url as string)
       .filter(Boolean);
     let ogMap: Record<string, string> = {};
     if (signalUrls.length > 0) {

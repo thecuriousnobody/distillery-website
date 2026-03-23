@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { ModelMessage } from "ai";
 import { streamText, stepCountIs } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { getCalendarEvents } from "./lib/calendar.js";
@@ -73,9 +74,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Normalize messages: DefaultChatTransport sends UIMessages with `parts`,
     // while plain fetch sends `{role, content}`. Handle both.
-    const messages = rawMessages.map((m: Record<string, unknown>) => {
+    const messages: ModelMessage[] = rawMessages.map((m: Record<string, unknown>) => {
       if (typeof m.content === "string") {
-        return { role: m.role as string, content: m.content };
+        return { role: m.role as "user" | "assistant", content: m.content };
       }
       // UIMessage format: extract text from parts array
       const parts = m.parts as Array<{ type: string; text?: string }> | undefined;
@@ -83,7 +84,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .filter((p) => p.type === "text" && p.text)
         .map((p) => p.text)
         .join("");
-      return { role: m.role as string, content };
+      return { role: m.role as "user" | "assistant", content };
     });
 
     const result = streamText({

@@ -47,10 +47,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       throw new Error(`Proximity API error: rooms=${roomsRes.status} bookings=${bookingsRes.status}`);
     }
 
-    const roomsData = await roomsRes.json();
-    const bookingsData = await bookingsRes.json();
+    const roomsData = (await roomsRes.json()) as { data: ProximityRoom[] };
+    const bookingsData = (await bookingsRes.json()) as { data: ProximityBooking[] };
 
-    const rooms = (roomsData.data as ProximityRoom[]).map((r) => ({
+    const rooms = roomsData.data.map((r) => ({
       id: r.id,
       name: r.name.replace(/\s*\$\d+\s*P\/H\s*/i, "").trim(), // Strip price from name
       color: r.display_color,
@@ -58,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       imageUrl: r.media_thumb_url || undefined,
     }));
 
-    const bookings = (bookingsData.data as ProximityBooking[]).map((b) => ({
+    const bookings = bookingsData.data.map((b) => ({
       id: b.id,
       title: b.title,
       start: b.start,

@@ -189,7 +189,7 @@ For each item, return:
 
 Return ONLY a valid JSON array of 12-15 items. No markdown, no backticks, no other text.`,
     prompt: `Here are today's search results across wildly different topics. Pick the most fascinating stories and create builder-focused digest items:\n\n${searchContext}`,
-    maxTokens: 4096,
+    maxOutputTokens: 4096,
     temperature: 0.7,
   });
 
@@ -250,7 +250,7 @@ For each signal, create:
 SKIP any negative/doom news. Only keep exciting/opportunity items.
 Return ONLY a JSON array. No markdown, no backticks, no other text.`,
       prompt: `Digest these signals for builders:\n\n${signalList}`,
-      maxTokens: 1536,
+      maxOutputTokens: 1536,
       temperature: 0.5,
     });
 
